@@ -1,416 +1,362 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-   <!-- Google tag (gtag.js) -->
-   <script async src="https://www.googletagmanager.com/gtag/js?id=G-NF0W24HZEM"></script>
-   <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
-      gtag('js', new Date());
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fusion XOS — Custom MIUI/HyperOS ROM</title>
+  <meta name="description" content="Fusion XOS is a clean, fast and feature-rich custom MIUI/HyperOS ROM. Download builds, see supported devices, changelogs, screenshots and join the community." />
+  <meta name="theme-color" content="#0ea5e9" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop stop-color='%230ea5e9'/%3E%3Cstop offset='1' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='48' fill='url(%23g)'/%3E%3Ctext x='50' y='58' text-anchor='middle' font-size='48' font-family='Inter,system-ui,Arial' fill='white'%3EF%3C/text%3E%3C/svg%3E" />
+  <!-- Open Graph / SEO -->
+  <meta property="og:title" content="Fusion XOS — Custom MIUI/HyperOS ROM" />
+  <meta property="og:description" content="Clean. Fast. Feature-rich. Download builds, see devices and changelogs." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://dummyimage.com/1200x630/0ea5e9/ffffff&text=Fusion+XOS" />
+  <style>
+    /* ====== Design tokens ====== */
+    :root {
+      --bg: #0b1220;
+      --bg-soft: #0f172a;
+      --card: #111827;
+      --text: #e5e7eb;
+      --text-dim: #a1a1aa;
+      --brand: #0ea5e9; /* sky-500 */
+      --brand-2: #7c3aed; /* violet-600 */
+      --accent: #22d3ee; /* cyan-400 */
+      --ring: #38bdf8;
+      --success: #22c55e;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --shadow: 0 10px 30px rgba(2,8,23,.45);
+      --radius: 18px;
+    }
+    @media (prefers-color-scheme: light) {
+      :root { --bg:#f8fafc; --bg-soft:#eef2ff; --card:#ffffff; --text:#0f172a; --text-dim:#334155; }
+    }
+    [data-theme="light"] { --bg:#f8fafc; --bg-soft:#eef2ff; --card:#ffffff; --text:#0f172a; --text-dim:#334155; }
+    html { scroll-behavior: smooth; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1000px 600px at 10% -10%, rgba(14,165,233,.35), transparent 40%),
+                  radial-gradient(900px 600px at 110% 10%, rgba(124,58,237,.25), transparent 40%),
+                  var(--bg);
+      color: var(--text);
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1120px, 92vw); margin: 0 auto; }
 
-      gtag('config', 'G-NF0W24HZEM');
-   </script>
+    /* ====== Header ====== */
+    header {
+      position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px);
+      background: color-mix(in oklab, var(--bg) 85%, transparent);
+      border-bottom: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
+    }
+    .nav { display:flex; align-items:center; justify-content:space-between; padding:14px 0; }
+    .brand { display:flex; gap:12px; align-items:center; font-weight:700; letter-spacing:.4px; }
+    .brand .logo { width:36px; height:36px; border-radius:12px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow: var(--shadow); display:grid; place-items:center; }
+    .brand .logo b { color:#fff; }
+    .navlinks { display:flex; gap:18px; align-items:center; }
+    .navlinks a { opacity:.9; padding:8px 12px; border-radius:12px; }
+    .navlinks a:hover { background: color-mix(in oklab, var(--card) 80%, transparent); }
+    .nav-cta { display:flex; gap:10px; align-items:center; }
+    .btn { padding:10px 14px; border-radius:14px; border:1px solid color-mix(in oklab, var(--ring) 40%, transparent); background: linear-gradient(180deg, color-mix(in oklab, var(--card) 70%, transparent), color-mix(in oklab, var(--card) 88%, transparent)); box-shadow: var(--shadow); font-weight:600; }
+    .btn.ghost { background: transparent; box-shadow: none; }
 
-   <meta charset="utf-8">
-   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-   <meta content="" name="miui mod rom">
-   <meta content="" name="keywords">
+    /* ====== Hero ====== */
+    .hero { padding: 72px 0 32px; }
+    .hero-grid { display:grid; grid-template-columns: 1.15fr .85fr; gap: 28px; align-items:center; }
+    .hero h1 { font-size: clamp(32px, 4.5vw, 56px); line-height:1.06; margin: 0 0 10px; }
+    .hero p { color: var(--text-dim); font-size: clamp(16px, 2.2vw, 18px); margin: 0 0 26px; }
+    .hero .cta { display:flex; gap:12px; flex-wrap:wrap; }
+    .statbar { display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-top:26px; }
+    .stat { padding:14px; border-radius:16px; background: linear-gradient(180deg, color-mix(in oklab, var(--card) 60%, transparent), color-mix(in oklab, var(--card) 90%, transparent)); border:1px solid color-mix(in oklab, var(--text) 10%, transparent); text-align:center; }
+    .stat b { font-size: 22px; }
+    .device-mock { aspect-ratio: 10/16; border-radius: 22px; background: linear-gradient(135deg, color-mix(in oklab, var(--brand) 30%, transparent), color-mix(in oklab, var(--brand-2) 25%, transparent)), url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 640%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop stop-color=%22%230ea5e9%22/%3E%3Cstop offset=%221%22 stop-color=%22%237c3aed%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx=%22220%22 cy=%22180%22 r=%22120%22 fill=%22url(%23g)%22 opacity=%22.55%22/%3E%3Ccircle cx=%2280%22 cy=%22340%22 r=%2290%22 fill=%22url(%23g)%22 opacity=%22.3%22/%3E%3C/svg%3E') center/cover; box-shadow: var(--shadow); border:8px solid color-mix(in oklab, var(--bg) 60%, transparent); }
 
-   <title>ResurrectedOS!</title>
+    /* ====== Sections ====== */
+    section { padding: 64px 0; }
+    .section-title { font-size: clamp(22px, 3.2vw, 32px); margin: 0 0 14px; }
+    .section-sub { color: var(--text-dim); margin: 0 0 26px; }
+    .grid { display:grid; gap:18px; }
+    .grid.features { grid-template-columns: repeat(3, 1fr); }
+    .grid.cards { grid-template-columns: repeat(4, 1fr); }
+    .card { background: linear-gradient(180deg, color-mix(in oklab, var(--card) 70%, transparent), color-mix(in oklab, var(--card) 92%, transparent)); border:1px solid color-mix(in oklab, var(--text) 10%, transparent); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+    .card h3 { margin: 6px 0 8px; font-size: 18px; }
+    .badge { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background: color-mix(in oklab, var(--brand) 25%, transparent); border:1px solid color-mix(in oklab, var(--brand) 40%, transparent); font-size: 12px; }
 
-   <!-- Favicons -->
-   <link href="assets/img/favicon.png" rel="icon">
-   <link href="assets/img/logo.png" rel="apple-touch-icon">
+    /* ====== Table ====== */
+    table { width:100%; border-collapse: collapse; overflow: hidden; border-radius: 16px; box-shadow: var(--shadow); }
+    th, td { padding: 14px; border-bottom: 1px solid color-mix(in oklab, var(--text) 10%, transparent); text-align:left; }
+    thead th { background: color-mix(in oklab, var(--card) 85%, transparent); }
+    tbody tr:hover { background: color-mix(in oklab, var(--card) 70%, transparent); }
 
-   <!-- Fonts -->
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&display=swap" rel="stylesheet">
+    /* ====== Footer ====== */
+    footer { padding: 48px 0 72px; color: var(--text-dim); }
 
-   <!-- Vendor CSS Files -->
-   <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-   <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    /* ====== Utilities ====== */
+    .muted { color: var(--text-dim); }
+    .row { display:flex; gap:12px; align-items:center; flex-wrap: wrap; }
+    .chips { display:flex; gap:10px; flex-wrap: wrap; }
+    .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 
-   <!-- Main CSS File -->
-   <link href="assets/css/style.css" rel="stylesheet">
+    /* ====== Responsive ====== */
+    @media (max-width: 980px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .grid.features { grid-template-columns: repeat(2, 1fr); }
+      .grid.cards { grid-template-columns: repeat(2, 1fr); }
+      .navlinks { display:none; }
+      .menu-btn { display:inline-flex; }
+    }
+    @media (max-width: 600px) {
+      .grid.features, .grid.cards { grid-template-columns: 1fr; }
+      .statbar { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ====== Animations ====== */
+    @keyframes float { from { transform: translateY(0); } to { transform: translateY(-8px); } }
+    .floating { animation: float 2.6s ease-in-out infinite alternate; }
+  </style>
 </head>
-<!-- ======= Header ======= -->
-<header id="header" class="fixed-top">
-   <div class="container d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo"><img src="assets/img/roslogo.png" alt="" class="img-fluid"></a>
-      <nav id="navbar" class="navbar">
-         <ul>
-            <li><a class="nav-link scrollto" href="#hero">Home</a></li>
-            <li><a class="nav-link scrollto" href="#about">About</a></li>
-            <li><a class="nav-link scrollto" href="#team">Team</a></li>
-            <li><a class="nav-link scrollto" href="#devices">Devices</a></li>
-
-            <li><a class="nav-link scrollto" href="terms.html">ToS</a></li>
-         </ul>
-         <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav>
-      <!-- navbar -->
-   </div>
-</header>
-<!-- End Header -->
-
 <body>
-   <div class="loadingScreen">
-      <h1>Loading, Please Wait...</h1>
-   </div>
-   <script src="assets/custom/loading.js"></script>
-
-   <!-- rain fx - skip the headers-->
-   <!-- <script src="assets/custom/rainfx.js"></script> -->
-
-   <!-- =======wenscrollsir======= -->
-   <div class="wenprogress">
-      <span class="neon"></span>
-   </div>
-   <!-- ======= Head Section ======= -->
-   <section id="hero" class="d-flex align-items-center">
-      <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
-         <div class="row justify-content-center">
-            <div class="col-xl-7 col-lg-9 text-center">
-               <h1>Introducing ResurrectedOS </h1>
-               <h2>A Project to continue the work of RemodedUi</h2>
-            </div>
-         </div>
-         <div class="row icon-boxes">
-            <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in"
-               data-aos-delay="500">
-               <div class="icon-box">
-                  <div class="icon"><i class="ri-android-line"></i></div>
-                  <h4 class="title"><a href="">Beyond MEME</a></h4>
-                  <p class="description">With ResurrectedOS in hand you can experience pure MIUI but with the
-                     customisations.
-                     ResurrectedOS
-                     is currently based on MIUI 13/14 and HyperOS versions.
-                  </p>
-               </div>
-            </div>
-            <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in"
-               data-aos-delay="200">
-               <div class="icon-box">
-                  <div class="icon"><i class="ri-stack-line"></i></div>
-                  <h4 class="title"><a href="">Debloated</a></h4>
-                  <p class="description">ResurrectedOS aka ROS is a totally debloated rom with just the core Xiaomi
-                     applications
-                     that are required by the system.
-                  </p>
-               </div>
-            </div>
-            <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in"
-               data-aos-delay="300">
-               <div class="icon-box">
-                  <div class="icon"><i class="ri-palette-line"></i></div>
-                  <h4 class="title"><a href="">Customisation</a></h4>
-                  <p class="description">With ResurrectedOS we deliver the best customisation options just under your
-                     fingertips.
-                  </p>
-               </div>
-            </div>
-            <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in"
-               data-aos-delay="400">
-               <div class="icon-box">
-                  <div class="icon"><i class="ri-command-line"></i></div>
-                  <h4 class="title"><a href="">Stability</a></h4>
-                  <p class="description">We here at ResurrectedOS try our best to give the most stable and smooth
-                     experience to
-                     the user
-                     end.
-                  </p>
-               </div>
-            </div>
-         </div>
+  <!-- ====== Header ====== -->
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="Fusion XOS home">
+        <span class="logo"><b>F</b></span>
+        <span>Fusion XOS</span>
+      </a>
+      <nav class="navlinks" aria-label="Primary">
+        <a href="#features">Features</a>
+        <a href="#devices">Devices</a>
+        <a href="#downloads">Downloads</a>
+        <a href="#screens">Screens</a>
+        <a href="#changelog">Changelog</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-cta">
+        <button id="themeToggle" class="btn ghost" aria-pressed="false" aria-label="Toggle theme">🌗</button>
+        <button class="btn" onclick="document.getElementById('downloads').scrollIntoView({behavior:'smooth'})">Get Build</button>
+        <button class="btn menu-btn" style="display:none" id="menuBtn" aria-expanded="false" aria-controls="mobileNav">☰</button>
       </div>
-   </section>
-   <!-- End Head -->
-   <main id="main">
-      <!-- ======= About Section ======= -->
-      <section id="about" class="about">
-         <div class="container" data-aos="fade-up">
-            <div class="section-title">
-               <h2>What is Resurrected OS?</h2>
-               <p>ResurrectedOS is the continuation of the works RemodedUI had left behind by the same team and core
-                  members that gave you tones of customisation options in RemodedUI
-                  alongwith
-                  stablity in mind.
-               </p>
-            </div>
-            <div class="row content">
-               <div class="col-lg-6">
-                  <p>
-                  <h3>Some Highlighted Features </h3>
-                  <ul>
-                     <li><i class="ri-check-double-line"></i> With ResurrectedOS in hand a user can experience the
-                        features that MEME lacked. </li>
-                     <li><i class="ri-check-double-line"></i> ResurrectedOS is saftynet passed by default, which means
-                        you can use
-                        banking apps on the rom without root. [This may vary with the device]
-                     </li>
-                  </ul>
-               </div>
-            </div>
-         </div>
-      </section>
-      <!-- End About Section -->
-      <br>
-      <!-- ======= Counts Section ======= -->
-      <section id="counts" class="counts section-bg">
-         <div class="container">
-            <div class="row justify-content-end">
-               <div class="col-lg-3 col-md-5 col-6 d-md-flex align-items-md-stretch">
-                  <div class="count-box">
-                     <span class="wenusersir">1</span>
-                     <p>Users</p>
-                  </div>
-               </div>
-               <div class="col-lg-3 col-md-5 col-6 d-md-flex align-items-md-stretch">
-                  <div class="count-box">
-                     <span data-purecounter-start="0" data-purecounter-end="200" data-purecounter-duration="2"
-                        class="purecounter"></span>
-                     <p>Downloads</p>
-                  </div>
-               </div>
-               <div class="col-lg-3 col-md-5 col-6 d-md-flex align-items-md-stretch">
-                  <div class="count-box">
-                     <span data-purecounter-start="2" data-purecounter-end="09" data-purecounter-duration="2"
-                        class="purecounter"></span>
-                     <p>Devices</p>
-                  </div>
-               </div>
-               <div class="col-lg-3 col-md-5 col-6 d-md-flex align-items-md-stretch">
-                  <div class="count-box">
-                     <span data-purecounter-start="0" data-purecounter-end="04" data-purecounter-duration="2"
-                        class="purecounter"></span>
-                     <p>Devs</p>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </section>
-      <!-- End Counts Section -->
-      <br>
-      <!-- ======= Team Section ======= -->
-      <section id="team" class="testimonials">
-         <div class="container" data-aos="fade-up">
-            <div class="section-title">
-               <h2>TEAM</h2>
-               <p>The brains behind ResurrectedOS who are giving their best to make it the most loved MEME mod rom.</p>
-            </div>
-            <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
-               <div class="swiper-wrapper">
-                  <div class="swiper-slide">
-                     <div class="testimonial-item">
-                        <p>
-                           <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                           Founder of ResurrectedOS.
-                           <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                        </p>
-                        <img src="https://avatars.githubusercontent.com/u/89455522?v=4" loading="lazy" class="testimonial-img" alt="">
-                        <h3>Jᴇғɪɴᴏ ⚝</h3>
-                        <h4>Founder</h4>
-                     </div>
-                  </div>
-                  <!-- End item -->
+    </div>
+    <div id="mobileNav" class="container" style="display:none; padding: 0 0 12px;">
+      <div class="row" style="justify-content: space-between; gap: 8px;">
+        <a href="#features" class="btn ghost" onclick="closeMenu()">Features</a>
+        <a href="#devices" class="btn ghost" onclick="closeMenu()">Devices</a>
+        <a href="#downloads" class="btn ghost" onclick="closeMenu()">Downloads</a>
+        <a href="#screens" class="btn ghost" onclick="closeMenu()">Screens</a>
+        <a href="#changelog" class="btn ghost" onclick="closeMenu()">Changelog</a>
+        <a href="#faq" class="btn ghost" onclick="closeMenu()">FAQ</a>
+      </div>
+    </div>
+  </header>
 
-                  <div class="swiper-slide">
-                     <div class="testimonial-item">
-                        <p>
-                           <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                           Co-founder of ResurrectedOS.
-                           <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                        </p>
-                        <img src="https://avatars.githubusercontent.com/u/90389157?v=4" loading="lazy" class="testimonial-img" alt="">
-                        <h3>NoOB🅓🅔🅥</h3>
-                        <h4>Co-Founder</h4>
-                     </div>
-                  </div>
-                  <!-- End item -->
+  <!-- ====== Hero ====== -->
+  <main id="top" class="hero container">
+    <div class="hero-grid">
+      <div>
+        <div class="chips">
+          <span class="badge">🚀 Performance tuned</span>
+          <span class="badge">🔒 SafetyNet/Play Integrity friendly*</span>
+          <span class="badge">🎨 Clean, minimal UI</span>
+        </div>
+        <h1>Clean. Fast. Feature‑rich.<br/>Meet <span style="background:linear-gradient(90deg,var(--brand),var(--brand-2)); -webkit-background-clip:text; background-clip:text; color:transparent;">Fusion XOS</span>.</h1>
+        <p>Fusion XOS is a custom MIUI/HyperOS experience focused on speed, stability and smart features. Built for enthusiasts, tuned for everyday.</p>
+        <div class="cta">
+          <a class="btn" href="#downloads">⬇️ Download</a>
+          <a class="btn ghost" href="#devices">📱 Supported Devices</a>
+          <a class="btn ghost" href="#community">💬 Community</a>
+        </div>
+        <div class="statbar">
+          <div class="stat"><b>40K+</b><div class="muted">Total downloads</div></div>
+          <div class="stat"><b>25+</b><div class="muted">Supported devices</div></div>
+          <div class="stat"><b>Monthly</b><div class="muted">Stable updates</div></div>
+        </div>
+      </div>
+      <div class="device-mock floating" aria-hidden="true"></div>
+    </div>
+  </main>
 
-                  <div class="swiper-slide">
-                     <div class="testimonial-item">
-                        <p>
-                           <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                           Developer of ResurrectedOS website & core team member.
-                           <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                        </p>
-                        <img src="https://avatars.githubusercontent.com/u/127223292?v=4" loading="lazy" class="testimonial-img" alt="">
-                        <h3>Burhanverse</h3>
-                        <h4>Core, WebDev</h4>
-                     </div>
-                  </div>
-                  <!-- End item -->
+  <!-- ====== Features ====== -->
+  <section id="features">
+    <div class="container">
+      <h2 class="section-title">Why Fusion XOS?</h2>
+      <p class="section-sub">A careful blend of performance, battery life and polish — without bloat.</p>
+      <div class="grid features">
+        <article class="card">
+          <div class="badge">⚡ Performance</div>
+          <h3>Optimized Kernel & Props</h3>
+          <p class="muted">Smart sched, thermal & I/O tweaks with device‑specific props for smooth, jitter‑free frames.</p>
+        </article>
+        <article class="card">
+          <div class="badge">🔋 Endurance</div>
+          <h3>All‑day Battery</h3>
+          <p class="muted">Deep idle, refined app standby and balanced power modes built in.</p>
+        </article>
+        <article class="card">
+          <div class="badge">🧹 Minimal</div>
+          <h3>Debloated & Clean</h3>
+          <p class="muted">No ads, no nags. Only the essentials and curated tools you’ll actually use.</p>
+        </article>
+        <article class="card">
+          <div class="badge">🎯 UX</div>
+          <h3>Refined HyperOS Look</h3>
+          <p class="muted">Subtle animations, neat typography and an aesthetic that stays out of your way.</p>
+        </article>
+        <article class="card">
+          <div class="badge">🛡️ Integrity*</div>
+          <h3>Banking Apps Friendly</h3>
+          <p class="muted">Play Integrity‑aware setup (device dependent). *Avoids root by default.</p>
+        </article>
+        <article class="card">
+          <div class="badge">🛠️ Power Tools</div>
+          <h3>Built‑in Tweaks</h3>
+          <p class="muted">Useful toggles for LTE/5G, thermal profiles, audio, status bar, and gestures.</p>
+        </article>
+      </div>
+    </div>
+  </section>
 
-                  <div class="swiper-slide">
-                     <div class="testimonial-item">
-                        <p>
-                           <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                           Core Team Member & AOSP Dev.
-                           <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                        </p>
-                        <img src="https://avatars.githubusercontent.com/u/54360298?v=4" loading="lazy" class="testimonial-img" alt="">
-                        <h3>Andy</h3>
-                        <h4>Core, AOSP-Dev</h4>
-                     </div>
-                  </div>
-                  <!-- End item -->
-               </div>
-               <div class="swiper-pagination"></div>
-            </div>
-         </div>
-      </section>
-      <!-- End Team Section -->
-      <br>
-      <!-- ======= Devices Section ======= -->
-      <section id="devices" class="portfolio">
-         <div class="container" data-aos="fade-up">
-            <div class="section-title">
-               <h2>Devices With Official Support</h2>
-               <p>Below are the officially supported devices.</p>
-            </div>
+  <!-- ====== Devices ====== -->
+  <section id="devices">
+    <div class="container">
+      <h2 class="section-title">Supported Devices</h2>
+      <p class="section-sub">Popular Qualcomm devices first, more added regularly. Want a port? Join the community below.</p>
+      <div class="grid cards">
+        <div class="card"><h3>POCO F5 / Redmi Note 12 Turbo (marble)</h3><p class="muted">Android 14/15 • Stable</p></div>
+        <div class="card"><h3>Redmi K40 / POCO F3 (alioth)</h3><p class="muted">Android 13/14 • Stable</p></div>
+        <div class="card"><h3>Mi 11X / Mi 11X Pro (haydn)</h3><p class="muted">Android 13/14 • Beta</p></div>
+        <div class="card"><h3>Redmi Note 10 Pro (sweet)</h3><p class="muted">Android 13 • Stable</p></div>
+      </div>
+      <p class="muted" style="margin-top:12px">Maintainers: <b>OnePiece</b>, <b>FusionX Team</b>. Contributors welcome.</p>
+    </div>
+  </section>
 
-            <div class="row" data-aos="fade-up" data-aos-delay="150">
-               <div class="col-lg-12 d-flex justify-content-center">
-                  <ul id="portfolio-flters">
-                     <li data-filter=".devices"></li>
-                  </ul>
-               </div>
-            </div>
-            <div class="row portfolio-container justify-content-center" data-aos="fade-up" data-aos-delay="300">
-               <!--garnet-->
-               <div class="col-lg-4 col-md-6 portfolio-item devices">
-                  <div class="portfolio-wrap">
-                     <div class="portfolio-box">
-                        <div class="overlay">
-                           <img src="assets/img/portfolio/ros.png" loading="lazy" class="img-fluid" alt="">
-                           <h5 class="d-flex justify-content-center mt-2">POCO X6 5G | Redmi Note 13 Pro</h5>
+  <!-- ====== Downloads ====== -->
+  <section id="downloads">
+    <div class="container">
+      <h2 class="section-title">Downloads</h2>
+      <p class="section-sub">Pick your device. Verify checksums before flashing. Clean flash is recommended unless the changelog says otherwise.</p>
+      <div class="card">
+        <table role="table" aria-label="Downloads table">
+          <thead><tr><th>Device</th><th>Build</th><th>Date</th><th>Size</th><th>Checksum</th><th>Links</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>POCO F5 (marble)</td>
+              <td>Fusion XOS 2.1 (A14)</td>
+              <td>2025‑08‑06</td>
+              <td>2.4 GB</td>
+              <td><code>abc123…</code></td>
+              <td class="row"><a class="btn" href="#">Primary</a><a class="btn ghost" href="#">Mirror</a></td>
+            </tr>
+            <tr>
+              <td>POCO F3 (alioth)</td>
+              <td>Fusion XOS 2.0 (A14)</td>
+              <td>2025‑07‑22</td>
+              <td>2.2 GB</td>
+              <td><code>def456…</code></td>
+              <td class="row"><a class="btn" href="#">Primary</a><a class="btn ghost" href="#">Mirror</a></td>
+            </tr>
+            <tr>
+              <td>Redmi Note 10 Pro (sweet)</td>
+              <td>Fusion XOS 1.9 (A13)</td>
+              <td>2025‑06‑15</td>
+              <td>2.0 GB</td>
+              <td><code>ghi789…</code></td>
+              <td class="row"><a class="btn" href="#">Primary</a><a class="btn ghost" href="#">Mirror</a></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="muted" style="margin:12px 0 0">Flashing guide: Boot custom recovery (e.g., TWRP/OrangeFox) → Wipe <code>data</code>, <code>cache</code>, <code>dalvik</code> → Flash ROM → Reboot. Vendor/firmware requirements may vary per device.</p>
+      </div>
+    </div>
+  </section>
 
-                           <p class="d-flex justify-content-center mt-2">garnet</p>
-                           <div class="d-flex justify-content-center mt-2">
-                              <a href="devices/garnet.html" class="btn btn-lg btn-light-magenta">Download</a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+  <!-- ====== Screenshots ====== -->
+  <section id="screens">
+    <div class="container">
+      <h2 class="section-title">Screenshots</h2>
+      <p class="section-sub">A peek at the refined HyperOS visuals in Fusion XOS.</p>
+      <div class="grid cards">
+        <!-- Accessible SVG placeholders; replace href with your images -->
+        <figure class="card" aria-label="Home screen">
+          <svg viewBox="0 0 300 600" role="img" aria-label="home screen" style="width:100%;border-radius:14px;display:block">
+            <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0ea5e9"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>
+            <rect width="300" height="600" fill="#0f172a"/>
+            <circle cx="220" cy="160" r="110" fill="url(#g1)" opacity=".35"/>
+            <rect x="30" y="60" width="240" height="28" rx="8" fill="#1f2937"/>
+            <rect x="30" y="110" width="240" height="420" rx="16" fill="#111827"/>
+          </svg>
+          <figcaption class="muted" style="margin-top:8px">Home & Widgets</figcaption>
+        </figure>
+        <figure class="card" aria-label="Settings">
+          <svg viewBox="0 0 300 600" role="img" aria-label="settings" style="width:100%;border-radius:14px;display:block">
+            <rect width="300" height="600" fill="#0f172a"/>
+            <rect x="30" y="60" width="240" height="28" rx="8" fill="#1f2937"/>
+            <rect x="30" y="110" width="240" height="420" rx="16" fill="#111827"/>
+            <rect x="48" y="140" width="160" height="16" rx="6" fill="#94a3b8"/>
+            <rect x="48" y="170" width="200" height="10" rx="5" fill="#475569"/>
+          </svg>
+          <figcaption class="muted" style="margin-top:8px">Reworked Settings</figcaption>
+        </figure>
+        <figure class="card" aria-label="Control Center">
+          <svg viewBox="0 0 300 600" role="img" aria-label="control center" style="width:100%;border-radius:14px;display:block">
+            <rect width="300" height="600" fill="#0f172a"/>
+            <rect x="30" y="120" width="240" height="360" rx="22" fill="#111827"/>
+            <circle cx="90" cy="210" r="34" fill="#0ea5e9"/>
+            <circle cx="210" cy="210" r="34" fill="#7c3aed"/>
+          </svg>
+          <figcaption class="muted" style="margin-top:8px">Toggles & Cards</figcaption>
+        </figure>
+        <figure class="card" aria-label="Dialer">
+          <svg viewBox="0 0 300 600" role="img" aria-label="dialer" style="width:100%;border-radius:14px;display:block">
+            <rect width="300" height="600" fill="#0f172a"/>
+            <rect x="30" y="90" width="240" height="420" rx="16" fill="#111827"/>
+            <rect x="60" y="130" width="180" height="12" rx="6" fill="#94a3b8"/>
+          </svg>
+          <figcaption class="muted" style="margin-top:8px">Apps themed</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
 
-               <!--redwood-->
+  <!-- ====== Changelog ====== -->
+  <section id="changelog">
+    <div class="container">
+      <h2 class="section-title">Changelog</h2>
+      <p class="section-sub">Highlights from the last releases. Full git & device diffs on our repos.</p>
+      <div class="card">
+        <details open>
+          <summary><b>v2.1</b> — 2025‑08‑06 (marble) <span class="badge" style="margin-left:8px">Stable</span></summary>
+          <ul>
+            <li>Thermal profile updates for sustained gaming</li>
+            <li>Play Integrity pass fixed on fresh installs</li>
+            <li>Updated Google Apps and security patch (Aug 2025)</li>
+          </ul>
+        </details>
+        <details>
+          <summary><b>v2.0</b> — 2025‑07‑22 (alioth)</summary>
+          <ul>
+            <li>UI polish: blur, typography, status bar</li>
+            <li>New power profiles & better idle drain</li>
+            <li>Misc bug fixes & localization improvements</li>
+          </ul>
+        </details>
+        <details>
+          <summary><b>v1.9</b> — 2025‑06‑15 (sweet)</summary>
+          <ul>
+            <li>Camera stability & audio stack updates</li>
+            <li>Launcher tweaks and smoother gestures</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </section>
 
-               <div class="col-lg-4 col-md-6 portfolio-item devices">
-                  <div class="portfolio-wrap">
-                     <div class="portfolio-box">
-                        <div class="overlay">
-                           <img src="assets/img/portfolio/ros.png" loading="lazy" class="img-fluid" alt="">
-                           <h5 class="d-flex justify-content-center mt-2">Poco X5 Pro | Redmi Note 12Pro se</h5>
-                           <p class="d-flex justify-content-center mt-2">redwood</p>
-                           <div class="d-flex justify-content-center mt-2">
-                              <a href="devices/redwood.html" class="btn btn-lg btn-light-magenta">Download</a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <!--moonstone-->
-               <div class="col-lg-4 col-md-6 portfolio-item devices">
-                  <div class="portfolio-wrap">
-                     <div class="portfolio-box">
-                        <div class="overlay">
-                           <img src="assets/img/portfolio/ros.png" loading="lazy" class="img-fluid" alt="">
-                           <h5 class="d-flex justify-content-center mt-2">POCO X5 5G</h5>
-                           <p class="d-flex justify-content-center mt-2">moonstone</p>
-                           <div class="d-flex justify-content-center mt-2">
-                              <a href="devices/moonstone.html" class="btn btn-lg btn-light-magenta">Download</a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <!--sweet-->
-               <div class="col-lg-4 col-md-6 portfolio-item devices">
-                  <div class="portfolio-wrap">
-                     <div class="portfolio-box">
-                        <div class="overlay">
-                           <img src="assets/img/portfolio/ros.png" loading="lazy" class="img-fluid" alt="">
-                           <h5 class="d-flex justify-content-center mt-2">Redmi Note 10 Pro</h5>
-                           <p class="d-flex justify-content-center mt-2">sweet</p>
-                           <div class="d-flex justify-content-center mt-2">
-                              <a href="devices/sweet.html" class="btn btn-lg btn-light-magenta">Download</a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <!--sunstone-->
-               <div class="col-lg-4 col-md-6 portfolio-item devices">
-                  <div class="portfolio-wrap">
-                     <div class="portfolio-box">
-                        <div class="overlay">
-                           <img src="assets/img/portfolio/ros.png" loading="lazy" class="img-fluid" alt="">
-                           <h5 class="d-flex justify-content-center mt-2">Redmi Note 12 5G | Note 12R Pro</h5>
-                           <p class="d-flex justify-content-center mt-2">sunstone</p>
-                           <div class="d-flex justify-content-center mt-2">
-                              <a href="devices/sunstone.html" class="btn btn-lg btn-light-magenta">Download</a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <!--marble-->
-               <div class="col-lg-4 col-md-6 portfolio-item devices">
-                  <div class="portfolio-wrap">
-                     <div class="portfolio-box">
-                        <div class="overlay">
-                           <img src="assets/img/portfolio/ros.png" loading="lazy" class="img-fluid" alt="">
-                           <h5 class="d-flex justify-content-center mt-2">Redmi Note 12 Turbo | POCO F5</h5>
-                           <p class="d-flex justify-content-center mt-2">marble</p>
-                           <div class="d-flex justify-content-center mt-2">
-                              <a href="devices/marble.html" class="btn btn-lg btn-light-magenta">Download</a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <!--xaga-->
-               <div class="col-lg-4 col-md-6 portfolio-item devices">
-                  <div class="portfolio-wrap">
-                     <div class="portfolio-box">
-                        <div class="overlay">
-                           <img src="assets/img/portfolio/ros.png" loading="lazy" class="img-fluid" alt="">
-                           <h5 class="d-flex justify-content-center mt-2">POCO X4 GT | Redmi K50i </h5>
-                           <p class="d-flex justify-content-center mt-2">xaga</p>
-                           <div class="d-flex justify-content-center mt-2">
-                              <a href="devices/xaga.html" class="btn btn-lg btn-light-magenta">Download</a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <!--whyred-->
-               <div class="col-lg-4 col-md-6 portfolio-item devices">
-                  <div class="portfolio-wrap">
-                     <div class="portfolio-box">
-                        <div class="overlay">
-                           <img src="assets/img/portfolio/ros.png" loading="lazy" class="img-fluid" alt="">
-                           <h5 class="d-flex justify-content-center mt-2">Redmi Note 5 Pro</h5>
-                           <p class="d-flex justify-content-center mt-2">whyred</p>
-                           <div class="d-flex justify-content-center mt-2">
-                              <a href="devices/whyred.html" class="btn btn-lg btn-light-magenta">Download</a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <!--miatoll-->
-               <div class="col-lg-4 col-md-6 portfolio-item devices">
-                  <div class="portfolio-wrap">
-                     <div class="portfolio-box">
-                        <div class="overlay">
-           
+  <!-- ====== FAQ / Community ====== -->
+  <section id="faq">
+    <div class="container">
+      <h2 class="section-title">FAQ</h2>
+      <div class="grid" style="grid-template-columns: 1.2fr .8fr; gap: 20px;">
+        <div class="card">
